@@ -7,6 +7,20 @@ import (
 	"os"
 )
 
+func check(e error) {
+	if e != nil {
+
+		panic(e)
+	}
+}
+
+func make_dir(dir_name string) {
+
+	err := os.Mkdir(dir_name, 0755)
+	check(err)
+
+}
+
 func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
@@ -21,9 +35,9 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	f, err := os.OpenFile(handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+	f, err := os.Create("Files/" + handler.Filename)
 	if err != nil {
-		fmt.Fprintf(w, "Error saving the file: %v", err)
+		fmt.Fprintf(w, "Error opening the file: %v", err)
 		return
 	}
 	defer f.Close()
@@ -32,7 +46,8 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "File uploaded successfully: %v", handler.Filename)
 }
 
-func main() {
+func server_start() {
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
 	})
@@ -40,4 +55,9 @@ func main() {
 	http.HandleFunc("/upload", uploadFile)
 	fmt.Println("Starting server at :4321")
 	http.ListenAndServe(":4321", nil)
+}
+
+func main() {
+
+	server_start()
 }
