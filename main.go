@@ -43,16 +43,15 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	defer f.Close()
 
 	io.Copy(f, file)
-	fmt.Fprintf(w, "File uploaded successfully: %v", handler.Filename)
 }
 
 func server_start() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "index.html")
+		uploadFile(w, r)
 	})
 
-	http.HandleFunc("/upload", uploadFile)
 	fmt.Println("Starting server at :4321")
 	http.ListenAndServe(":4321", nil)
 }
