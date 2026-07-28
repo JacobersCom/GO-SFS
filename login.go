@@ -41,15 +41,15 @@ func GenerateFromPassword(password string, p *argon_params) (hash []byte, err er
 
 func Login(w http.ResponseWriter, r *http.Request) {
 
-	params := &argon_params{
-		memory:      64 * 1024,
-		iterations:  3,
-		parallelism: 2,
-		salt_length: 16,
-		key_length:  32,
-	}
+	//params := &argon_params{
+	//	memory:      64 * 1024,
+	//	iterations:  3,
+	//	parallelism: 2,
+	//	salt_length: 16,
+	//	key_length:  32,
+	//}
 
-	if r.Method != "POST" {
+	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
@@ -57,11 +57,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	check(err)
 
+	username := r.FormValue("First")
 	password := r.FormValue("password")
 
-	hash, err := GenerateFromPassword(password, params)
-	check(err)
+	fmt.Fprintf(w, username)
+	fmt.Fprintf(w, password)
 
-	fmt.Print(hash)
+	//hash, err := GenerateFromPassword(password, params)
+	//check(err)
 
 }

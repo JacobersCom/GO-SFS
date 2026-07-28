@@ -6,15 +6,18 @@
 
     <body>
         <!--Login in code-->
-        <form action="/login">
+        <form action="/login" method="POST">
+            
             <label for="first">Username:</label>
             <input type="text" id="first" name="first"
                 placeholder="Enter your username" required>
 
             <label for="password">Password:</label>
-            <input type="text" id="password" name="password"
+            <input type="password" id="password" name="password"
                 placeholder="Enter your password" required>
+            
             <button type="submit">Submit</button>
+        
         </form>
     </body>
 <html>
